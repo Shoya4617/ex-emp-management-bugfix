@@ -1,5 +1,7 @@
 package jp.co.sample.emp_management.domain;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * 管理者情報を表すドメイン.
  * 

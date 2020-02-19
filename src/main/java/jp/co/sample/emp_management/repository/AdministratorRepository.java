@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import jp.co.sample.emp_management.domain.Administrator;
@@ -35,6 +36,9 @@ public class AdministratorRepository {
 
 	@Autowired
 	private NamedParameterJdbcTemplate template;
+	
+	private SimpleJdbcInsert insert;
+
 
 	/**
 	 * メールアドレスとパスワードから管理者情報を取得します.
@@ -58,10 +62,18 @@ public class AdministratorRepository {
 	 * 
 	 * @param administrator 管理者情報
 	 */
-	public void insert(Administrator administrator) {
+	public int insert(Administrator administrator) {
 		SqlParameterSource param = new BeanPropertySqlParameterSource(administrator);
-		String sql = "insert into administrators(name,mail_address,password)values(:name,:mailAddress,:password);";
-		template.update(sql, param);
+		try {
+			String sql = "insert into administrators(name,mail_address,password)values(:name,:mailAddress,:password);";
+			template.update(sql, param);
+			return 1;
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		
 	}
 
 	/**

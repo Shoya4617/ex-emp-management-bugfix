@@ -26,7 +26,12 @@ public class AdministratorService {
 	 * @param administrator　管理者情報
 	 */
 	public int insert(Administrator administrator) {
-		return administratorRepository.insert(administrator);
+		Administrator admin = administratorRepository.findByMailAddress(administrator.getMailAddress());
+		if(admin!=null) {
+			return 0;
+		}
+		administratorRepository.insert(administrator);
+		return 1;
 	}
 	
 	/**
@@ -39,4 +44,6 @@ public class AdministratorService {
 		Administrator administrator = administratorRepository.findByMailAddressAndPassward(mailAddress, passward);
 		return administrator;
 	}
+	
+	
 }

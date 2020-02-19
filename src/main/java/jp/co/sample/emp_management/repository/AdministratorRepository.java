@@ -36,9 +36,6 @@ public class AdministratorRepository {
 
 	@Autowired
 	private NamedParameterJdbcTemplate template;
-	
-	private SimpleJdbcInsert insert;
-
 
 	/**
 	 * メールアドレスとパスワードから管理者情報を取得します.
@@ -48,8 +45,8 @@ public class AdministratorRepository {
 	 * @return 管理者情報 存在しない場合はnullを返します
 	 */
 	public Administrator findByMailAddressAndPassward(String mailAddress, String password) {
-		String sql = "select id,name,mail_address,password from administrators where mail_address= '" + mailAddress + "' and password='" + password + "'";
-		SqlParameterSource param = new MapSqlParameterSource();
+		String sql = "select id,name,mail_address,password from administrators where mail_address=:mailAddress and password=:password";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("mailAddress", mailAddress).addValue("password", password);
 		List<Administrator> administratorList = template.query(sql, param, ADMINISTRATOR_ROW_MAPPER);
 		if (administratorList.size() == 0) {
 			return null;
@@ -62,18 +59,10 @@ public class AdministratorRepository {
 	 * 
 	 * @param administrator 管理者情報
 	 */
-	public int insert(Administrator administrator) {
+	public void insert(Administrator administrator) {
 		SqlParameterSource param = new BeanPropertySqlParameterSource(administrator);
-		try {
 			String sql = "insert into administrators(name,mail_address,password)values(:name,:mailAddress,:password);";
 			template.update(sql, param);
-			return 1;
-			
-		}catch(Exception e) {
-			e.printStackTrace();
-			return 0;
-		}
-		
 	}
 
 	/**

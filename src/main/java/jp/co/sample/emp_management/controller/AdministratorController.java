@@ -73,11 +73,17 @@ public class AdministratorController {
 		if(result.hasErrors()) {
 			return toInsert();
 		}
+		if(!form.getPassword2().equals(form.getPassword())) {
+			model.addAttribute("passMatchError", "パスワードが一致しません");
+			System.out.println(form.getPassword2());
+			System.out.println(form.getPassword());
+			return toInsert();
+		}
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
-		administratorService.insert(administrator);
-		if(administratorService.insert(administrator)==0) {
+		int num = administratorService.insert(administrator);
+		if(num==0) {
 			model.addAttribute("error","そのメアドはすでに登録されています");
 			return toInsert();
 		}
@@ -113,6 +119,9 @@ public class AdministratorController {
 			model.addAttribute("errorMessage", "メールアドレスまたはパスワードが不正です。");
 			return toLogin();
 		}
+		BeanUtils.copyProperties(form, administrator);
+		System.out.println(administrator);
+		session.setAttribute("administrator", administrator);
 		return "forward:/employee/showList";
 	}
 	

@@ -75,13 +75,9 @@ public class AdministratorController {
 		}
 
 		Administrator administrator = new Administrator();
-		// フォームからドメインにプロパティ値をコピー
-		BeanUtils.copyProperties(form, administrator);
 		
 		// メアドの入力値チェック
 		administrator = administratorService.findByMailAddress(form.getMailAddress());
-		System.out.println(administrator);
-
 		if(!form.getPassword2().equals(form.getPassword())||administrator!=null) {
 			if(!form.getPassword2().equals(form.getPassword())) {
 			result.rejectValue("password",null, "パスワードが一致しません");
@@ -91,6 +87,13 @@ public class AdministratorController {
 			}
 			return toInsert();
 		}
+		
+		// フォームからドメインにプロパティ値をコピー
+		administrator = new Administrator();
+		BeanUtils.copyProperties(form, administrator);
+		System.out.println(administrator);
+		
+		//フォームから受け取った情報をドメインにコピーしインサートを行う
 		administratorService.insert(administrator);
 		return "redirect:";
 	}

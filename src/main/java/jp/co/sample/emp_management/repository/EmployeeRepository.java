@@ -56,6 +56,14 @@ public class EmployeeRepository {
 
 		return developmentList;
 	}
+	
+	public List<Employee> findByName(String name) {
+		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees where name like :name order by hire_date";
+		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%"+name+"%");
+		List<Employee> developmentList = template.query(sql, param,EMPLOYEE_ROW_MAPPER);
+
+		return developmentList;
+	}
 
 	/**
 	 * 主キーから従業員情報を取得します.
@@ -83,4 +91,6 @@ public class EmployeeRepository {
 		String updateSql = "UPDATE employees SET dependents_count=:dependentsCount WHERE id=:id";
 		template.update(updateSql, param);
 	}
+	
+	
 }

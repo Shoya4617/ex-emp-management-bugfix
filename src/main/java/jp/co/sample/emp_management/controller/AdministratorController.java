@@ -80,7 +80,7 @@ public class AdministratorController {
 		administrator = administratorService.findByMailAddress(form.getMailAddress());
 		if(!form.getPassword2().equals(form.getPassword())||administrator!=null) {
 			if(!form.getPassword2().equals(form.getPassword())) {
-			result.rejectValue("password",null, "パスワードが一致しません");
+				result.rejectValue("password",null, "パスワードが一致しません");
 			}
 			if(administrator!=null) {
 				result.rejectValue("mailAddress",null,"そのメアドはすでに登録されています");

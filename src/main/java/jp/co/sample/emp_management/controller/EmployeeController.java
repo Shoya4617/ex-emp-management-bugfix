@@ -66,6 +66,10 @@ public class EmployeeController {
 	public String search(Model model,String name) {
 		List<Employee> employeeList = employeeService.showSearchedList(name);
 		System.out.println(employeeList);
+		if(employeeList==null) {
+			model.addAttribute("NoList","一件もありませんでした");
+			return showList(model);
+		}
 		model.addAttribute("employeeList", employeeList);
 		return "employee/list";
 	}

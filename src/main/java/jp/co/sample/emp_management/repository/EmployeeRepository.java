@@ -61,7 +61,9 @@ public class EmployeeRepository {
 		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees where name like :name order by hire_date";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%"+name+"%");
 		List<Employee> developmentList = template.query(sql, param,EMPLOYEE_ROW_MAPPER);
-
+		if (developmentList.size() == 0) {
+			return null;
+		}
 		return developmentList;
 	}
 

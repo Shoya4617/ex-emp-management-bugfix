@@ -64,7 +64,7 @@
 
 <!-- ここにモックのtable要素を貼り付けます -->
 				<form th:action="@{/employee/search}">
-					<input type="text" name="name"> <button>検索する</button>
+					<input type="text" name="name"> <button>検索する</button>　<span th:if="${NoList}" th:text="${NoList}" style=color:red></span>
 				</form>
 				<table class="table table-striped">
 					<thead>
@@ -90,7 +90,6 @@
 						</tr>
 					</tbody>
 				</table>
-
 
 <!-- ここから下を編集する必要はありません -->
 

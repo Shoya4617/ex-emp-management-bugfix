@@ -73,22 +73,25 @@ public class AdministratorController {
 		if(result.hasErrors()) {
 			return toInsert();
 		}
-		if(!form.getPassword2().equals(form.getPassword())) {
-			model.addAttribute("passMatchError", "パスワードが一致しません");
-			System.out.println(form.getPassword2());
-			System.out.println(form.getPassword());
-			return toInsert();
-		}
+
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
 		
 		// メアドの入力値チェック
 		administrator = administratorService.findByMailAddress(form.getMailAddress());
-		if(administrator==null) {
-			model.addAttribute("error","そのメアドはすでに登録されています");
+		System.out.println(administrator);
+
+		if(!form.getPassword2().equals(form.getPassword())||administrator!=null) {
+			if(!form.getPassword2().equals(form.getPassword())) {
+			result.rejectValue("password",null, "パスワードが一致しません");
+			}
+			if(administrator!=null) {
+				result.rejectValue("mailAddress",null,"そのメアドはすでに登録されています");
+			}
 			return toInsert();
 		}
+		administratorService.insert(administrator);
 		return "redirect:";
 	}
 

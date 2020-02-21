@@ -2,6 +2,10 @@
 <html lang="ja"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+ 	<script type="text/javascript" src="/js/jquery.simplePagination.js"></script>	
+	<link rel= "stylesheet" href="/css/simplePagination.css">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -93,16 +97,16 @@
 						</tr>
 					</tbody>
 				</table>
+			<div class="pagination-holder clearfix">aaa
+            	<div id="light-pagination" class="pagination"></div>
+        	</div>
 
 <!-- ここから下を編集する必要はありません -->
-
 			</div>
 		</div>
 	</div>
 	<!-- end container -->
 	
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script src="../../static/js/bootstrap.min.js"></script>
+	
 </body>
 </html>

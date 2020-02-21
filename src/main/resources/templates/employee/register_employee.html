@@ -68,7 +68,7 @@
 
 <!-- ここにモックのform要素を貼り付けます -->
 
-					<form method="post" action="list.html" th:action="@{/employee/register}" th:object="${insertEmployeeForm}">
+					<form method="post" action="list.html" th:action="@{/employee/register}" th:object="${insertEmployeeForm}" enctype="multipart/form-data">
 						<fieldset>
 							<legend>従業員情報登録</legend>
 							<table class="table table-striped">
@@ -87,7 +87,7 @@
 							    </th>
 							    <td>
 							    <div th:errors="*{image}" style=color:red></div>
-							    <input type="file" name="image" accept="/.jpg/.png"  th:field="*{image}">
+							    <input type="file" name="image" accept="/.jpg/.png"  th:field="*{image}" >
 						    	</td>
 							  </tr>
 							  <tr>
@@ -106,7 +106,7 @@
 							    </th>
 							    <td>
 							    <div th:errors="*{hireDate}" style=color:red></div>
-									<input type="date" name="hireDate">
+									<input type="date" name="hireDate"  th:field="*{hireDate}">
 							    </td>
 							  </tr>
 							  <tr>

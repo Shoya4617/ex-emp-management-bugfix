@@ -57,16 +57,25 @@ public class EmployeeRepository {
 		return developmentList;
 	}
 	
+	
+	/**
+	 * 名前で曖昧検索するためのメソッド.
+	 * @param name 曖昧検索したい名前の単語
+	 * @return 従業員一覧情報
+	 */
 	public List<Employee> findByName(String name) {
 		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees where name like :name order by hire_date";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%"+name+"%");
 		List<Employee> developmentList = template.query(sql, param,EMPLOYEE_ROW_MAPPER);
-//		if (developmentList.size() == 0) {
-//			return null;
-//		}
+
 		return developmentList;
 	}
 	
+	
+	/**
+	 * 従業員情報を挿入するメソッド.
+	 * @param employee 従業員情報
+	 */
 	public void insert(Employee employee) {
 		synchronized (this) {
 		String sql = "insert into employees(id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count)values((select max(id+1) from employees),:name,:image,:gender,:hireDate,:mailAddress,:zipCode,:address,:telephone,:salary,:characteristics,:dependentsCount)";

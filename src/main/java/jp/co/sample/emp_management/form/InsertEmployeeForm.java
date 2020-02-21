@@ -5,14 +5,14 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Range;
+import org.springframework.web.multipart.MultipartFile;
 
 public class InsertEmployeeForm {
 	/** 従業員名 */
 	@NotBlank(message="入力必須項目です")
 	private String name;
 	/** 画像 */
-	@NotBlank(message="画像を選択してください")
-	private String image;
+	private MultipartFile image;
 	/** 性別 */
 	@NotBlank(message="入力必須項目です")
 	private String gender;
@@ -45,7 +45,6 @@ public class InsertEmployeeForm {
 	@NotBlank(message="入力必須項目です")
 	@Range(message="入力された数値が不正です",min=0,max=50)
 	private String dependentsCount;
-	
 	@Override
 	public String toString() {
 		return "InsertEmployeeForm [name=" + name + ", image=" + image + ", gender=" + gender + ", hireDate=" + hireDate
@@ -53,17 +52,16 @@ public class InsertEmployeeForm {
 				+ telephone + ", salary=" + salary + ", characteristics=" + characteristics + ", dependentsCount="
 				+ dependentsCount + "]";
 	}
-	
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getImage() {
+	public MultipartFile getImage() {
 		return image;
 	}
-	public void setImage(String image) {
+	public void setImage(MultipartFile image) {
 		this.image = image;
 	}
 	public String getGender() {
@@ -120,4 +118,6 @@ public class InsertEmployeeForm {
 	public void setDependentsCount(String dependentsCount) {
 		this.dependentsCount = dependentsCount;
 	}
+	
+	
 }

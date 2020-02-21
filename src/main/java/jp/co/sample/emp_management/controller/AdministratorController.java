@@ -28,7 +28,7 @@ public class AdministratorController {
 
 	@Autowired
 	private AdministratorService administratorService;
-	
+
 	@Autowired
 	private HttpSession session;
 
@@ -41,8 +41,8 @@ public class AdministratorController {
 	public InsertAdministratorForm setUpInsertAdministratorForm() {
 		return new InsertAdministratorForm();
 	}
-	
-	//  (SpringSecurityに任せるためコメントアウトしました)
+
+	// (SpringSecurityに任せるためコメントアウトしました)
 	@ModelAttribute
 	public LoginForm setUpLoginForm() {
 		return new LoginForm();
@@ -64,36 +64,30 @@ public class AdministratorController {
 	/**
 	 * 管理者情報を登録します.
 	 * 
-	 * @param form
-	 *            管理者情報用フォーム
+	 * @param form 管理者情報用フォーム
 	 * @return ログイン画面へリダイレクト
 	 */
 	@RequestMapping("/insert")
-	public String insert(@Validated InsertAdministratorForm form,BindingResult result,Model model) {
-		if(result.hasErrors()) {
+	public String insert(@Validated InsertAdministratorForm form, BindingResult result, Model model) {
+
+		// メアドの入力値チェック
+		if (!form.getPassword2().equals(form.getPassword())) {
+			result.rejectValue("password", null, "パスワードが一致しません");
+		}
+		if (administratorService.findByMailAddress(form.getMailAddress()) != null) {
+			result.rejectValue("mailAddress", null, "そのメアドはすでに登録されています");
+		}
+
+		if (result.hasErrors()) {
 			return toInsert();
 		}
 
-		Administrator administrator = new Administrator();
-		
-		// メアドの入力値チェック
-		administrator = administratorService.findByMailAddress(form.getMailAddress());
-		if(!form.getPassword2().equals(form.getPassword())||administrator!=null) {
-			if(!form.getPassword2().equals(form.getPassword())) {
-				result.rejectValue("password",null, "パスワードが一致しません");
-			}
-			if(administrator!=null) {
-				result.rejectValue("mailAddress",null,"そのメアドはすでに登録されています");
-			}
-			return toInsert();
-		}
-		
 		// フォームからドメインにプロパティ値をコピー
-		administrator = new Administrator();
+		Administrator administrator = new Administrator();
 		BeanUtils.copyProperties(form, administrator);
 		System.out.println(administrator);
-		
-		//フォームから受け取った情報をドメインにコピーしインサートを行う
+
+		// フォームから受け取った情報をドメインにコピーしインサートを行う
 		administratorService.insert(administrator);
 		return "redirect:";
 	}
@@ -114,10 +108,8 @@ public class AdministratorController {
 	/**
 	 * ログインします.
 	 * 
-	 * @param form
-	 *            管理者情報用フォーム
-	 * @param result
-	 *            エラー情報格納用オブッジェクト
+	 * @param form   管理者情報用フォーム
+	 * @param result エラー情報格納用オブッジェクト
 	 * @return ログイン後の従業員一覧画面
 	 */
 	@RequestMapping("/login")
@@ -132,7 +124,7 @@ public class AdministratorController {
 		session.setAttribute("administrator", administrator);
 		return "forward:/employee/showList";
 	}
-	
+
 	/////////////////////////////////////////////////////
 	// ユースケース：ログアウトをする
 	/////////////////////////////////////////////////////
@@ -146,5 +138,5 @@ public class AdministratorController {
 		session.invalidate();
 		return "redirect:/";
 	}
-	
+
 }

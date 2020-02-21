@@ -57,4 +57,8 @@ public class EmployeeService {
 	public void update(Employee employee) {
 		employeeRepository.update(employee);
 	}
+	
+	public void insert(Employee employee) {
+		employeeRepository.insert(employee);
+	}
 }

@@ -61,10 +61,18 @@ public class EmployeeRepository {
 		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees where name like :name order by hire_date";
 		SqlParameterSource param = new MapSqlParameterSource().addValue("name", "%"+name+"%");
 		List<Employee> developmentList = template.query(sql, param,EMPLOYEE_ROW_MAPPER);
-		if (developmentList.size() == 0) {
-			return null;
-		}
+//		if (developmentList.size() == 0) {
+//			return null;
+//		}
 		return developmentList;
+	}
+	
+	public void insert(Employee employee) {
+		synchronized (this) {
+		String sql = "insert into employees(id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count)values((select max(id+1) from employees),:name,:image,:gender,:hireDate,:mailAddress,:zipCode,:address,:telephone,:salary,:characteristics,:dependentsCount)";
+		SqlParameterSource param = new BeanPropertySqlParameterSource(employee);
+		template.update(sql, param);
+		}
 	}
 
 	/**
